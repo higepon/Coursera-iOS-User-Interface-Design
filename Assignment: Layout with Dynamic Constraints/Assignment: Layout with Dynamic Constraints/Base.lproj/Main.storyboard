@@ -50,6 +50,10 @@
                             <constraint firstItem="QLj-LA-jBi" firstAttribute="width" secondItem="q2B-Wq-k9O" secondAttribute="width" id="ySf-u8-oBg"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="q2B-Wq-k9O" id="bO8-pV-7i8"/>
+                        <outlet property="webView" destination="QLj-LA-jBi" id="KWc-HI-jcy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

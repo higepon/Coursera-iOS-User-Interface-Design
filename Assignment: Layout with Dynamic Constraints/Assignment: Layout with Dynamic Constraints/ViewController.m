@@ -6,9 +6,12 @@
 //  Copyright © 2016 Higepon Taro Minowa. All rights reserved.
 //
 
+#import "MapKit/Mapkit.h"
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
@@ -16,12 +19,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    // Initialize the web page
+    NSString *webURL = @"https://twitter.com/";
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webURL]];
+    [self.webView loadRequest:request];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
