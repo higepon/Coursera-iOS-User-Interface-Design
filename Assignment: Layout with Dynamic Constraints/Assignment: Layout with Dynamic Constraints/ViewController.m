@@ -10,6 +10,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
@@ -24,7 +25,19 @@
     NSString *webURL = @"https://twitter.com/";
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webURL]];
     [self.webView loadRequest:request];
-}
 
+    // Center the map to Twitter HQ location
+    CLLocationDegrees latitude = 37.776692;
+    CLLocationDegrees longititude = -122.4189706;
+
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = CLLocationCoordinate2DMake(latitude, longititude);
+    annotation.title = @"Twitter HQ";
+    [self.mapView addAnnotation:annotation];
+
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 10000, 10000);
+    MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:region];
+    [self.mapView setRegion:adjustedRegion];
+}
 
 @end
