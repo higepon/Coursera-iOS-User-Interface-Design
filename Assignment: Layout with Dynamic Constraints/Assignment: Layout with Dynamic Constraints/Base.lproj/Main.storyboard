@@ -143,7 +143,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="1355 Market St #900, San Francisco, CA 94103" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="g67-W2-fch">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Twitter HQ: micro blogging server located in San Francisco" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="g67-W2-fch">
                                 <rect key="frame" x="20" y="0.0" width="280" height="193"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
