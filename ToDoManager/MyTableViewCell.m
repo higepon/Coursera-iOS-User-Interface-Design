@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;
+@property (nonatomic) ToDoEntity *toDoEntity;
 
 @end
 
@@ -25,6 +26,16 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)setTodoEntity:(ToDoEntity *)toDoEntity
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    self.toDoEntity = toDoEntity;
+    self.dueDateLabel.text = [dateFormatter stringFromDate:toDoEntity.due_date];
+    self.titleLabel.text = toDoEntity.title;
 }
 
 @end
