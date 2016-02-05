@@ -6,11 +6,14 @@
 //  Copyright © 2016 Higepon Taro Minowa. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import "MyUITableViewController.h"
+#import "MyTableViewCell.h"
 
-@interface MyUITableViewController ()
+@interface MyUITableViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) NSFetchedResultsController *resulltsController;
 
 @end
 
@@ -18,12 +21,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    [self initializeNSFetchedResultsControllerDelegate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,13 +33,11 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return self.resulltsController.sections[section].numberOfObjects;
 }
 
 -(void)receiveMOC:(NSManagedObjectContext *)incomingMOC
@@ -48,50 +45,62 @@
     self.managedObjectContext = incomingMOC;
 }
 
-/*
+- (void)initializeNSFetchedResultsControllerDelegate {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"ToDoEntity" inManagedObjectContext:self.managedObjectContext];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"due_date" ascending:YES]];
+
+    self.resulltsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext
+                                                                    sectionNameKeyPath:nil cacheName:nil];
+    self.resulltsController.delegate = self;
+
+    NSError *err;
+    BOOL fetchSuceeeded = [self.resulltsController performFetch:&err];
+    if (!fetchSuceeeded) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Couldn't fetch" userInfo:nil];
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+    ToDoEntity* item = self.resulltsController.sections[indexPath.section].objects[indexPath.row];
+    MyTableViewCell *cell = (MyTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"MyTableViewCell" forIndexPath:indexPath];
+    [cell setTodoEntity:item];
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView beginUpdates];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeUpdate:
+        {
+            MyTableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+            ToDoEntity *item = [controller objectAtIndexPath:indexPath];
+            [cell setTodoEntity:item];
+            break;
+        }
+        case NSFetchedResultsChangeMove:
+            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark - Navigation
 

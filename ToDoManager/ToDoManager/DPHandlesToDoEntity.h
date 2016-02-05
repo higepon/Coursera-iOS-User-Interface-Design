@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class ToDoEntity;
+
 @protocol DPHandlesToDoEntity <NSObject>
 
 - (void)reciveToDoEntity:(ToDoEntity *)incomingEntity;
