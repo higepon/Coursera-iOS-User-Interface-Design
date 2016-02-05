@@ -9,7 +9,7 @@
 #import "MapKit/MapKit.h"
 #import "ViewController.h"
 
-@interface ViewController () <CLLocationManagerDelegate>
+@interface ViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISwitch *switchField;
@@ -18,6 +18,7 @@
 @property (strong, nonatomic) MKPointAnnotation *sanFranciscoAnno;
 @property (strong, nonatomic) MKPointAnnotation *currentAnno;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (nonatomic, assign) BOOL mapIsMoving;
 
 @end
 
@@ -29,6 +30,7 @@
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     [self.locationManager requestWhenInUseAuthorization];
+    self.mapIsMoving = NO;
     [self addAnnotations];
 }
 
@@ -64,7 +66,9 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     self.currentAnno.coordinate = locations.lastObject.coordinate;
-    [self centerMap:self.currentAnno];
+    if (!self.mapIsMoving) {
+        [self centerMap:self.currentAnno];
+    }
 }
 
 - (IBAction)tokyoTapped:(id)sender {
@@ -81,6 +85,14 @@
 
 - (void)centerMap:(MKPointAnnotation *)centerPoint {
     [self.mapView setCenterCoordinate:centerPoint.coordinate animated:YES];
+}
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    self.mapIsMoving = YES;
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    self.mapIsMoving = NO;
 }
 
 @end
