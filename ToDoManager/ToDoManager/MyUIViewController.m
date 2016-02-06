@@ -9,13 +9,15 @@
 #import "MyUIViewController.h"
 #import "ToDoEntity.h"
 
-@interface MyUIViewController ()
+@interface MyUIViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) ToDoEntity* toDoEntity;
+@property (nonatomic, readonly) NSArray *pickerOptions;
 @property (weak, nonatomic) IBOutlet UITextField *titleField;
-@property (weak, nonatomic) IBOutlet UITextView *detailField;
-@property (weak, nonatomic) IBOutlet UIDatePicker *dueDateField;
+@property (weak, nonatomic) IBOutlet UIPickerView *priorityField;
+@property (weak, nonatomic) IBOutlet UISwitch *inProgressSwitch;
+
 @property (nonatomic) BOOL wasDeleted;
 @end
 
@@ -23,6 +25,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _pickerOptions = @[@"Important", @"Normal", @"Minor"];
+    self.priorityField.dataSource = self;
+    self.priorityField.delegate = self;
     // Do any additional setup after loading the view.
 }
 
@@ -38,10 +43,32 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (IBAction)dueDateEditEnd:(id)sender {
-    self.toDoEntity.due_date = self.dueDateField.date;
+- (NSInteger)numberOfComponentsInPickerView:
+(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView
+numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.pickerOptions count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView
+             titleForRow:(NSInteger)row
+            forComponent:(NSInteger)component
+{
+    return [self.pickerOptions objectAtIndex:row];
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row
+      inComponent:(NSInteger)component
+{
+    self.toDoEntity.priority = self.pickerOptions[row];
     [self saveToDoEntity];
 }
+
 
 - (void)saveToDoEntity
 {
@@ -56,10 +83,13 @@
 {
     self.wasDeleted = NO;
     self.titleField.text = self.toDoEntity.title;
-    self.detailField.text = self.toDoEntity.detail;
-    if (self.toDoEntity.due_date != nil) {
-        self.dueDateField.date = self.toDoEntity.due_date;
+    NSString *priority = self.toDoEntity.priority;
+    if (priority) {
+        [self.priorityField selectRow:[self.pickerOptions indexOfObject:priority] inComponent:0 animated:NO];
+    } else {
+        [self.priorityField selectRow:1 inComponent:0 animated:NO];
     }
+    [self.inProgressSwitch setOn:self.toDoEntity.inProgress];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:self];
 }
@@ -70,16 +100,8 @@
 
     if (!self.wasDeleted) {
         self.toDoEntity.title = self.titleField.text;
-        self.toDoEntity.detail = self.detailField.text;
-        self.toDoEntity.due_date = self.dueDateField.date;
-        [self saveToDoEntity];
-    }
-}
-
-- (void)textViewDidEndEditing:(NSNotification *)notificaton
-{
-    if (notificaton.object == self) {
-        self.toDoEntity.detail = self.detailField.text;
+        self.toDoEntity.priority = self.pickerOptions[[self.priorityField selectedRowInComponent:0]];
+        self.toDoEntity.inProgress= self.inProgressSwitch.isOn;
         [self saveToDoEntity];
     }
 }

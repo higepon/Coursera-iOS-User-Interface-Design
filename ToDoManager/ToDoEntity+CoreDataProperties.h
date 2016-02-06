@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *title;
 @property (nullable, nonatomic, retain) NSString *detail;
 @property (nullable, nonatomic, retain) NSDate *due_date;
+@property (nonatomic) BOOL inProgress;
+@property (nullable, retain) NSString *priority;
 
 @end
 

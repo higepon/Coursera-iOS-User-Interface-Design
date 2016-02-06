@@ -11,7 +11,8 @@
 @interface MyTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priorityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *inProgressLabe;
 
 @end
 
@@ -33,7 +34,8 @@
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     self.toDoEntity = toDoEntity;
-    self.dueDateLabel.text = [dateFormatter stringFromDate:toDoEntity.due_date];
+    self.priorityLabel.text = self.toDoEntity.priority;
+    self.inProgressLabe.text = self.toDoEntity.inProgress ? @"In Progress" : @"Not Started";
     self.titleLabel.text = toDoEntity.title;
 }
 

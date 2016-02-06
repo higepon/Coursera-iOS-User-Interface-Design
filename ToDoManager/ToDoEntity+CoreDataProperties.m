@@ -16,5 +16,7 @@
 @dynamic title;
 @dynamic detail;
 @dynamic due_date;
+@dynamic inProgress;
+@dynamic priority;
 
 @end
