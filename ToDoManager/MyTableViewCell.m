@@ -12,7 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;
-@property (nonatomic) ToDoEntity *toDoEntity;
 
 @end
 

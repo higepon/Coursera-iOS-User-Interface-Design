@@ -12,5 +12,6 @@
 @interface MyTableViewCell : UITableViewCell
 
 - (void)setTodoEntity:(ToDoEntity *)toDoEntity;
+@property (nonatomic) ToDoEntity *toDoEntity;
 
 @end

@@ -9,6 +9,7 @@
 #import <CoreData/CoreData.h>
 #import "MyUITableViewController.h"
 #import "MyTableViewCell.h"
+#import "DPHandlesToDoEntity.h"
 
 @interface MyUITableViewController () <NSFetchedResultsControllerDelegate>
 
@@ -104,12 +105,18 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    id<DPHandlesMoc> child = (id<DPHandlesMoc>)[segue destinationViewController];
+    id<DPHandlesMoc, DPHandlesToDoEntity> child = (id<DPHandlesMoc, DPHandlesToDoEntity>)[segue destinationViewController];
     [child receiveMOC:self.managedObjectContext];
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+    ToDoEntity *item;
+    if ([sender isMemberOfClass:[UIBarButtonItem class]]) {
+        item = [NSEntityDescription insertNewObjectForEntityForName:@"ToDoEntity" inManagedObjectContext:self.managedObjectContext];
+    } else {
+        MyTableViewCell *cell = (MyTableViewCell *)sender;
+        item = cell.toDoEntity;
+    }
+    [child reciveToDoEntity:item];
 }
 
 

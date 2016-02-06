@@ -23,14 +23,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HZj-Sh-467">
-                                            <rect key="frame" x="8" y="11" width="140" height="20.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSX-uW-DR3">
+                                            <rect key="frame" x="376" y="11.5" width="216" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSX-uW-DR3">
-                                            <rect key="frame" x="452" y="11.5" width="140" height="20.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HZj-Sh-467">
+                                            <rect key="frame" x="8" y="11" width="360" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -38,8 +38,8 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="WSX-uW-DR3" firstAttribute="centerY" secondItem="lee-qL-Xkk" secondAttribute="centerY" id="7L5-PO-avr"/>
-                                        <constraint firstItem="WSX-uW-DR3" firstAttribute="width" secondItem="HZj-Sh-467" secondAttribute="width" id="Xdu-0s-Q86"/>
-                                        <constraint firstItem="WSX-uW-DR3" firstAttribute="leading" secondItem="HZj-Sh-467" secondAttribute="trailing" multiplier="3" constant="8" symbolic="YES" id="drH-ay-GeC"/>
+                                        <constraint firstItem="WSX-uW-DR3" firstAttribute="width" secondItem="HZj-Sh-467" secondAttribute="width" multiplier="0.6" id="Xdu-0s-Q86"/>
+                                        <constraint firstItem="WSX-uW-DR3" firstAttribute="leading" secondItem="HZj-Sh-467" secondAttribute="trailing" constant="8" symbolic="YES" id="drH-ay-GeC"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="WSX-uW-DR3" secondAttribute="trailing" id="jow-l0-f49"/>
                                         <constraint firstItem="HZj-Sh-467" firstAttribute="centerY" secondItem="lee-qL-Xkk" secondAttribute="centerY" id="og2-FI-R8C"/>
                                         <constraint firstItem="WSX-uW-DR3" firstAttribute="centerY" secondItem="lee-qL-Xkk" secondAttribute="centerY" id="sBj-eO-Aus"/>
@@ -58,6 +58,7 @@
                                 <connections>
                                     <outlet property="dueDateLabel" destination="WSX-uW-DR3" id="CNg-DO-oeF"/>
                                     <outlet property="titleLabel" destination="HZj-Sh-467" id="tb6-ep-LcN"/>
+                                    <segue destination="z4b-sm-lPF" kind="show" id="0i4-FP-9SG"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -112,6 +113,9 @@
                                 <rect key="frame" x="20" y="103" width="570" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="titleFieldEditEnd:" destination="z4b-sm-lPF" eventType="editingDidEnd" id="o9i-aa-5ys"/>
+                                </connections>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Sxx-I7-5PH">
                                 <rect key="frame" x="20" y="172" width="570" height="191"/>
@@ -125,6 +129,9 @@
                                 <date key="date" timeIntervalSinceReferenceDate="476371779.15417397">
                                     <!--2016-02-05 13:29:39 +0000-->
                                 </date>
+                                <connections>
+                                    <action selector="dueDateEditEnd:" destination="z4b-sm-lPF" eventType="editingDidEnd" id="Rt3-UY-h85"/>
+                                </connections>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCr-cQ-bM3">
                                 <rect key="frame" x="20" y="141" width="139" height="23"/>
@@ -157,7 +164,18 @@
                             <constraint firstItem="EGK-Wg-LHT" firstAttribute="leading" secondItem="Sxx-I7-5PH" secondAttribute="leading" id="wI4-Rz-9Dy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="ToDo" id="Wu6-mH-biG"/>
+                    <navigationItem key="navigationItem" title="ToDo" id="Wu6-mH-biG">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="5rn-Ik-wQ9">
+                            <connections>
+                                <action selector="trashTapped:" destination="z4b-sm-lPF" id="0jy-CP-41v"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="detailField" destination="Sxx-I7-5PH" id="Poq-q9-qgY"/>
+                        <outlet property="dueDateField" destination="kHo-7O-a9C" id="hd6-FF-R0C"/>
+                        <outlet property="titleField" destination="Yxi-I7-feC" id="mEe-3W-bNf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vQy-wO-dfG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -180,4 +198,7 @@
             <point key="canvasLocation" x="-224" y="616"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="XFn-uO-SUf"/>
+    </inferredMetricsTieBreakers>
 </document>
