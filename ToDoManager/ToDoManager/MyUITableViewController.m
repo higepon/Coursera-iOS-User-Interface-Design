@@ -50,7 +50,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     fetchRequest.entity = [NSEntityDescription entityForName:@"ToDoEntity" inManagedObjectContext:self.managedObjectContext];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"due_date" ascending:YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES]];
 
     self.resulltsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext
                                                                     sectionNameKeyPath:nil cacheName:nil];
